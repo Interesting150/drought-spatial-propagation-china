@@ -1,0 +1,19 @@
+name: wrr-drought-network
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - xarray
+  - netcdf4
+  - h5py
+  - numba
+  - rasterio
+  - geopandas
+  - shapely
+  - matplotlib
+  - cartopy
+  - joblib
+  - tqdm
