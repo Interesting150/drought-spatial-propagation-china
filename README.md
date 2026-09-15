@@ -24,57 +24,50 @@ drought-spatial-propagation-china/
 └── README.md
 ```
 
+`network_core.py` contains the shared numerical routines. The numbered scripts implement the main analysis workflow and can be run in numerical order after the required input paths are configured in `config.py`.
+
 ## 2. Analysis workflow
 
-Run the scripts in numerical order after editing `config.py` or placing the required files under `data/`.
+1. **`00_prepare_diagnostic_inputs.py`** — prepares analysis-ready atmospheric and land-surface diagnostic variables used in the composite analysis.
+2. **`01_spi_distribution_selection_and_export.py`** — calculates 5-, 30-, and 90-day precipitation accumulations, performs five-distribution fitting and AIC-based model selection, evaluates selected-model goodness of fit using KS-D, and exports SPI.
+3. **`02_network_analysis.py`** — performs drought-event extraction, full-period and seasonal event assignment, Event Synchronization, surrogate significance testing, and calculation of DC, MSD, and ND.
+4. **`03_source_sink_analysis.py`** — identifies significant source and sink regions using Getis-Ord Gi* and evaluates directional source-sink linkages.
+5. **`04_lead_lag_composites.py`** — calculates source/sink composite anomalies over scale-specific lead-lag windows using centered moving averages.
+6. **`05_sensitivity_test.py`** — evaluates sensitivity to event-extraction thresholds and maximum allowable synchronization lags.
+7. **`06_generate_figures.py`** — generates reproducible figures from the analysis outputs. Figure styling may differ slightly from the final publication graphics.
 
-1. **`00_prepare_diagnostic_inputs.py`** — optional provenance/helper script for analysis-ready W500, precipitation, Tm, VPD, SWL1, and Bowen-ratio inputs. See `REPRODUCIBILITY_NOTES.md` before using it to regenerate VPD or Bowen ratio.
-2. **`01_spi_distribution_selection_and_export.py`** — 5-, 30-, and 90-day precipitation accumulation; five-distribution fitting; AIC-based selection with conservative Gamma retention when ΔAIC(Gamma) ≤ 2; SPI export; selected-model GOF summaries.
-3. **`02_network_analysis.py`** — drought-event extraction; full-period and onset-month seasonal assignment; Event Synchronization; Q and |q| surrogate significance; DC, MSD, ND, and optional BC outputs.
-4. **`03_source_sink_analysis.py`** — Getis-Ord Gi* significant-region extraction and directional source-sink matching.
-5. **`04_lead_lag_composites.py`** — source/sink composite anomalies over scale-specific lead-lag ranges with centered 3/15/45-day moving averages.
-6. **`05_sensitivity_test.py`** — event-threshold and maximum-lag sensitivity experiments over the full parameter grid reported in the manuscript.
-7. **`06_generate_figures.py`** — reproducible plots from archived outputs. Styling is simplified relative to the final manuscript graphics; see `REPRODUCIBILITY_NOTES.md`.
+The code also retains an optional Betweenness Centrality implementation for diagnostic purposes; BC is not used in the revised manuscript.
 
-Run a small synthetic check with:
-
-```bash
-python demo_smoke_test.py
-```
-
-## 3. Manuscript parameter settings
+## 3. Baseline analysis settings
 
 | Component | Baseline setting |
 |---|---|
-| SPI accumulation | 5, 30, 90 days |
-| Rapid-onset event | ΔSPI-5d ≤ −2.5 over 15 days; SPI-5d ≤ −1.0 within the development interval |
-| Monthly/seasonal drought threshold | SPI < −1.0 in the supplied event-extraction implementation |
-| Baseline maximum synchronization lag | 15, 30, 90 days |
-| Surrogate tests | 1000 surrogates; 95th percentile for Q and |q| |
+| SPI accumulation | 5, 30, and 90 days |
+| Rapid-onset event | ΔSPI-5d ≤ −2.5 over 15 days, reaching SPI-5d ≤ −1.0 |
+| Monthly/seasonal event parameters | SPI threshold = −1.0; duration = 30 and 90 days, respectively |
+| Maximum synchronization lag | 15, 30, and 90 days |
+| Surrogate tests | 1000 surrogates; 95th percentile for Q and \|q\| |
 | Minimum events for a network node | 3 |
-| Betweenness Centrality approximation | 1000 sampled source nodes |
-| Seasonal assignment | Identify events on the continuous record; assign by onset month |
-| Threshold sensitivity | rapid: 2.0/2.5/3.0 standard-unit decline; monthly/seasonal: −0.5/−1.0/−1.5 |
+| Seasonal assignment | Events identified from the continuous record and assigned by onset month |
+| Threshold sensitivity | rapid-onset: 2.0/2.5/3.0 standard-unit decline; monthly/seasonal: −0.5/−1.0/−1.5 |
 | Lag sensitivity | 10/15/20; 15/30/45; 60/90/120 days |
-| Candidate Gi* clusters | absolute Gi* z-score > 1.96, p < 0.05; cluster ≥ 0.1% of valid land cells |
-| Directional source-sink criterion | flux ratio ≥ 60% |
-| Retained source-sink group | combined source + sink coverage ≥ 1% of valid land cells |
+| Candidate Gi* clusters | \|Gi* z\| > 1.96, p < 0.05; minimum cluster fraction = 0.1% |
+| Source-sink flux-ratio threshold | 60% |
+| Minimum combined source-sink coverage | 1% |
 | Lead-lag ranges | −15:+30; −30:+60; −90:+180 days |
-| Centered smoothing | 3, 15, 45 days |
-
-The release deliberately preserves several implementation conventions from the supplied analysis code. These are documented in `REPRODUCIBILITY_NOTES.md` and should be reconciled with the manuscript before DOI publication.
+| Centered smoothing | 3, 15, and 45 days |
 
 ## 4. Input data
 
-Raw third-party datasets are not redistributed in this software archive. Configure local paths in `config.py`.
+Raw third-party datasets are not redistributed in this software repository. Users should obtain the original datasets from their authoritative providers and configure local paths in `config.py`.
 
-Required analysis inputs include:
+Required inputs include:
 
-- CN05.1 daily precipitation, 0.25°, 1961–2022;
-- ERA5/CN05.1 analysis-ready diagnostic variables used in the composite analysis: W500, precipitation, Tm, VPD, SWL1, and Bowen ratio;
+- CN05.1 daily precipitation at 0.25° resolution for 1961–2022;
+- atmospheric and land-surface diagnostic variables used in the composite analysis, including W500, precipitation, Tm, VPD, SWL1, and Bowen ratio;
 - a mainland China boundary polygon.
 
-Climate-zone and nine-dash-line shapefiles are optional for publication-style plotting. If raw third-party data cannot be redistributed, cite their authoritative repositories and archive the processed/figure-supporting products needed to evaluate the paper in a DOI-bearing data repository. See `DATA_ARCHIVE_CHECKLIST.md`.
+Climate-zone and nine-dash-line shapefiles are optional and are used for publication-style plotting.
 
 ## 5. Installation
 
@@ -98,19 +91,20 @@ conda activate wrr-drought-network
 
 ### PyCharm
 
-Open this folder as a project, select the virtual/conda environment as the project interpreter, edit `config.py`, and run each numbered script directly.
+Open this folder as a project, select the virtual or conda environment as the project interpreter, configure the required paths in `config.py`, and run the numbered scripts in sequence.
 
 ## 6. Outputs
 
-Outputs are written under `outputs/` by stage. Large adjacency and matrix products can require substantial memory and disk space. For manuscript preservation, archive at least the figure-supporting processed products listed in `DATA_ARCHIVE_CHECKLIST.md`.
+Outputs are written under `outputs/` by analysis stage. Large adjacency and synchronization-matrix products may require substantial memory and disk space.
 
 ## 7. Citation and license
 
-Before publication:
+Archived software release:
 
-1. verify the software creator list in `CITATION.cff`;
-2. replace the GitHub and DOI placeholders;
-3. confirm the software license with the authors/institution;
-4. cite the **version-specific archival DOI** in the manuscript Availability Statement and References.
+Fei, J. (2026). *Code for Scale-Dependent and Seasonally Modulated Spatial Propagation of Rapid-Onset, Monthly-Scale, and Seasonal-Scale Meteorological Drought across Mainland China* (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22249367.
 
-See `PRE_RELEASE_CHECKLIST.md` before depositing the package.
+Development repository:
+
+https://github.com/Interesting150/drought-spatial-propagation-china
+
+License: MIT.
