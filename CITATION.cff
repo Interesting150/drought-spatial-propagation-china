@@ -3,7 +3,7 @@ message: "If you use this software, please cite the archived software release an
 title: "Code for Scale-Dependent and Seasonally Modulated Spatial Propagation of Rapid-Onset, Monthly-Scale, and Seasonal-Scale Meteorological Drought across Mainland China"
 type: software
 version: "1.0.0"
-doi: "10.5281/zenodo.22249367"
+doi: "10.5281/zenodo.22764883"
 repository-code: "https://github.com/Interesting150/drought-spatial-propagation-china"
 authors:
   - family-names: "Fei"
