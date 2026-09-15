@@ -2,10 +2,12 @@
 
 Reproducibility code for the Water Resources Research manuscript **“Scale-Dependent and Seasonally Modulated Spatial Propagation of Rapid-Onset, Monthly-Scale, and Seasonal-Scale Meteorological Drought across Mainland China.”**
 
+The archived Version 1.0.0 is available at Zenodo: https://doi.org/10.5281/zenodo.22249367.
+
 ## 1. Repository structure
 
 ```text
-WRR_drought_network_code_v1.0.0/
+drought-spatial-propagation-china/
 ├── network_core.py
 ├── config.py
 ├── 00_prepare_diagnostic_inputs.py
@@ -15,20 +17,12 @@ WRR_drought_network_code_v1.0.0/
 ├── 04_lead_lag_composites.py
 ├── 05_sensitivity_test.py
 ├── 06_generate_figures.py
-├── demo_smoke_test.py
 ├── requirements.txt
 ├── environment.yml
 ├── CITATION.cff
 ├── LICENSE
-├── ORIGINAL_TO_RELEASE_MAP.md
-├── REPRODUCIBILITY_NOTES.md
-├── PRE_RELEASE_CHECKLIST.md
-├── DATA_ARCHIVE_CHECKLIST.md
-├── data/README.md
-└── outputs/README.md
+└── README.md
 ```
-
-`network_core.py` contains the shared numerical routines. The numbered scripts are directly runnable from PyCharm or from a terminal and each contains a `main()` entry point.
 
 ## 2. Analysis workflow
 
