@@ -2,7 +2,7 @@
 
 Reproducibility code for the Water Resources Research manuscript **“Scale-Dependent and Seasonally Modulated Spatial Propagation of Rapid-Onset, Monthly-Scale, and Seasonal-Scale Meteorological Drought across Mainland China.”**
 
-The archived Version 1.0.0 is available at Zenodo: https://doi.org/10.5281/zenodo.22249367.
+The archived Version 1.0.1 is available at Zenodo: https://doi.org/10.5281/zenodo.22764883.
 
 ## 1. Repository structure
 
@@ -101,7 +101,7 @@ Outputs are written under `outputs/` by analysis stage. Large adjacency and sync
 
 Archived software release:
 
-Fei, J. (2026). *Code for Scale-Dependent and Seasonally Modulated Spatial Propagation of Rapid-Onset, Monthly-Scale, and Seasonal-Scale Meteorological Drought across Mainland China* (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22249367.
+Fei, J. (2026). *Code for Scale-Dependent and Seasonally Modulated Spatial Propagation of Rapid-Onset, Monthly-Scale, and Seasonal-Scale Meteorological Drought across Mainland China* (Version 1.0.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22764883.
 
 Development repository:
 
